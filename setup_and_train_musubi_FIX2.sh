@@ -221,17 +221,9 @@ if [ ! -f "$SETUP_MARKER" ] || [ "$FORCE_SETUP" = "1" ]; then
   pip install torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 --index-url https://download.pytorch.org/whl/cu128
   
   # Устанавливаем xformers (совместим с PyTorch 2.9.0)
-  echo ">>> Установка xformers для оптимизации памяти..."
   pip uninstall xformers -y || true
   pip install xformers --no-cache-dir
-  
-  # Проверяем, что xformers работает
-  if python -c "import xformers" 2>/dev/null; then
-    echo ">>> xformers успешно установлен"
-  else
-    echo ">>> Предупреждение: xformers не установлен, отключаем его использование"
-    export XFORMERS_DISABLED=1
-  fi
+  python -c "import xformers; print('xformers OK')" || export XFORMERS_DISABLED=1
   
   # Остальные зависимости
   pip install protobuf six huggingface_hub==0.34.3
