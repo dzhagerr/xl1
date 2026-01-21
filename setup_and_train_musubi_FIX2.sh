@@ -217,8 +217,10 @@ if [ ! -f "$SETUP_MARKER" ] || [ "$FORCE_SETUP" = "1" ]; then
   # 3) Python deps
   pip install -e .
   
-  # Устанавливаем PyTorch 2.9.1 с совместимыми версиями
-  pip install torch==2.9.1 torchvision==0.24.0 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128
+  # Устанавливаем PyTorch 2.9.0 (совместим с torchvision 0.24.0 и xformers)
+  pip install torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 --index-url https://download.pytorch.org/whl/cu128
+  
+  # Устанавливаем xformers (совместим с PyTorch 2.9.0)
   pip uninstall xformers -y || true
   pip install xformers --no-cache-dir
   python -c "import xformers; print('xformers OK')" || export XFORMERS_DISABLED=1
