@@ -220,10 +220,11 @@ if [ ! -f "$SETUP_MARKER" ] || [ "$FORCE_SETUP" = "1" ]; then
   # Устанавливаем PyTorch с правильными версиями
   pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0 --index-url https://download.pytorch.org/whl/cu128
   
-  # Переустанавливаем xformers после PyTorch для совместимости
-  # Это гарантирует, что xformers будет собран для правильной версии PyTorch
-  pip uninstall xformers -y || true
-  pip install xformers --no-cache-dir
+  # Отключаем xformers (избегаем конфликтов версий)
+  export XFORMERS_DISABLED=1
+  
+  # Не устанавливаем xformers - он не критичен для работы
+  # pip install xformers --no-cache-dir
   
   # Остальные зависимости
   pip install protobuf six huggingface_hub==0.34.3
